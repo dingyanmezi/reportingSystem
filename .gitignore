@@ -1,0 +1,5 @@
+*.iml
+lambda/
+application.properties
+**/target
+ReportingSystemArchitecture.pdf
