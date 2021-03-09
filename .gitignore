@@ -3,3 +3,5 @@ lambda/
 application.properties
 **/target
 ReportingSystemArchitecture.pdf
+**/.DS_Store
+.idea/
