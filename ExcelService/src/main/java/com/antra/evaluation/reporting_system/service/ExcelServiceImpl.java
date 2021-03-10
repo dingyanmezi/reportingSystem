@@ -71,8 +71,10 @@ public class ExcelServiceImpl implements ExcelService {
             fileInfo.setDescription(request.getDescription());
 
             // update on S3
-            s3Client.putObject(s3Bucket, fileInfo.getFileId(), generatedFile.getAbsolutePath());
-            generatedFile.delete();
+            log.debug("Upload generatedFile to S3 {}", generatedFile.getAbsolutePath());
+            s3Client.putObject(s3Bucket, fileInfo.getFileId(), generatedFile);
+            log.debug("Uploaded");
+
         } catch (IOException e) {
             throw new FileGenerationException(e);
         }

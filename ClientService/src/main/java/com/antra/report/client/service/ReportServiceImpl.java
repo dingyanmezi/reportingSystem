@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -206,5 +207,20 @@ public class ReportServiceImpl implements ReportService {
         String bucket = fileLocation.split("/")[0];
         String key = fileLocation.split("/")[1];
         return s3Client.getObject(bucket, key).getObjectContent();
+    }
+
+    @Override
+    public void deleteReport(String reqId, FileType type){
+        ReportRequestEntity entity = reportRequestRepo.findById(reqId).orElseThrow(RequestNotFoundException::new);
+        String fileLocation = "";
+        if (type == FileType.PDF) {
+            fileLocation = entity.getPdfReport().getFileLocation();
+        } else if (type == FileType.EXCEL) {
+            fileLocation = entity.getExcelReport().getFileLocation();
+        }
+        String bucket = fileLocation.split("/")[0];
+        String key = fileLocation.split("/")[1];
+        s3Client.deleteObject(bucket, key);
+
     }
 }
